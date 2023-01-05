@@ -1,6 +1,4 @@
 # 0x03. Unity - UI
-## Maze Game
-[`Game Demo`](https://titania792.github.io/holbertonschool-0x03-unity-ui/)
 
 #### How to play
 
