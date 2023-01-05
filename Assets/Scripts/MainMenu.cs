@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject trap = GameObject.Find("Trap");
-    public GameObject goal = GameObject.Find("Goal");
+    public GameObject trap;
+    public GameObject goal;
     public Material trapMat;
     public Material goalMat;
     public Material trapMatCB;
@@ -16,6 +16,8 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
+        trap = GameObject.Find("Trap");
+        goal = GameObject.Find("Goal");
         colorblindMode.isOn = false;
     }
     public void ResetMaterials()
