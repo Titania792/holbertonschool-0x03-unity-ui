@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -7,10 +9,15 @@ public class PlayerController : MonoBehaviour
     public float speed = 1000f;
     private int score = 0;
     public int health = 5;
+    public Text scoreText;
+    public Text healthText;
+    public Text winLoseText;
+    public Image winLoseBG;
     // Start is called before the first frame update
     void Start()
     {
         player = GetComponent<Rigidbody>();
+        winLoseBG.enabled = false;
     }
     // Update is called once per frame
     void FixedUpdate()
@@ -34,18 +41,25 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Pickup")
         {
             score += 1;
-            Debug.Log("Score: " + score);
+            SetScoreText();
+            //Debug.Log("Score: " + score);
             Destroy(other.gameObject); //removes the coin from the scene.
             //other.gameObject.SetActive(false); // hides the object in the scene, we can reference it but not see it in scene.
         }
         if (other.gameObject.tag == "Trap")
         {
             health -= 1;
-            Debug.Log("Health: " + health);
+            SetHealthText();
+            //Debug.Log("Health: " + health);
         }
         if (other.gameObject.tag == "Goal")
         {
-            Debug.Log("You win!");
+            winLoseBG.enabled = true;
+            winLoseText.text = "You Win!";
+            winLoseText.color = Color.black;
+            winLoseBG.color = Color.green;
+            //Debug.Log("You win!");
+            StartCoroutine(LoadScene(3));
         }
     }
 
@@ -53,8 +67,32 @@ public class PlayerController : MonoBehaviour
     {
         if (health == 0)
         {
-            Debug.Log("Game Over!");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // reset scene to their original values
+            winLoseBG.enabled = true;
+            winLoseText.text = "Game Over!";
+            winLoseText.color = Color.white;
+            winLoseBG.color = Color.red;
+            //Debug.Log("Game Over!");
+            StartCoroutine(LoadScene(3));
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("menu");
+        }
+    }
+
+    void SetScoreText()
+    {
+        scoreText.text = "Score: " + score;
+    }
+
+    void SetHealthText()
+    {
+        healthText.text = "Health: " + health;
+    }
+
+    IEnumerator LoadScene(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // reset scene to their original values
     }
 }
